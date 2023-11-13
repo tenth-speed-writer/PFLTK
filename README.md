@@ -7,3 +7,16 @@ To set up:
 To run:
 
 * Execute server.py
+
+## Required Discord Permissions
+
+To use this bot in a server, use an invite link with the following permissions:
+
+### Scopes
+
+* bot
+
+### Bot Permissions
+
+* Send Messages
+* Read Message History 
