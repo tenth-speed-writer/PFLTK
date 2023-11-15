@@ -20,3 +20,12 @@ To use this bot in a server, use an invite link with the following permissions:
 
 * Send Messages
 * Read Message History 
+
+
+## Notepad
+
+Every ticket needs:
+* User who filed it
+* When it was filed
+* Destination
+* Source (optional)
