@@ -40,12 +40,11 @@ class DB:
         The schema lives here.
         """
         creation_sql = """
-            /*
             Represents a single war on the server for which this application
             has been set up. Used primarily to distinguish maps and the
             things associated with them as unique across wars.
             */
-            CREATE TABLE IF NOT EXISTS war (
+            CREATE TABLE IF NOT EXISTS wars (
                 war_number INTEGER PRIMARY KEY NOT NULL,
                 last_fetched_on TEXT NOT NULL
             );
@@ -59,7 +58,7 @@ class DB:
                 war_number INTEGER NOT NULL,
                 
                 FOREIGN KEY (war_number)
-                REFERENCES war (war_number)
+                REFERENCES wars (war_number)
                 ON DELETE CASCADE
             );
 
