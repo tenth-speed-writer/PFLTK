@@ -32,6 +32,16 @@ class DB:
             datetime.datetime: A datetime object corresponding to the provided string
         """
         return datetime.datetime.fromisoformat(str)
+
+    def get_connection(self) -> sqlite3.Connection:
+        """
+        Generates a new SQLite3 connection object based on
+        the connection string provided at instantiation.
+
+        Returns:
+            sqlite3.Connection: A SQLite3 connection object, based on the given string
+        """
+        return sqlite3.connect(self.connection_string)
     
     def generate_db(self) -> None:
         """
@@ -227,5 +237,6 @@ class DB:
             );
         """
 
-    def __init__(self):
-        pass
+    def __init__(self, connection_string: str):
+        self.connection_string = connection_string
+
