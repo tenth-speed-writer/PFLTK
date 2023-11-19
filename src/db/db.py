@@ -238,7 +238,12 @@ class DB:
 
 
         """
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(creation_sql)
+        conn.commit()
+        conn.close()
     
     def __init__(self, connection_string: str):
         self.connection_string = connection_string
-
