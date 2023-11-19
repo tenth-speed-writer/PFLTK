@@ -24,3 +24,13 @@ class UniqueRowAlreadyExistsException(Exception):
     """
     def __init__(self, *args: object) -> None:
         super().__init__(*args)
+
+class NoDataReturnedException(Exception):
+    """
+    Represents an exception where a query which should have returned data
+    if the app is in operating order instead returned nothing. This is
+    primarily used for data that should have been populated when the
+    application launched, rather than just returned when a table is empty.
+    """
+    def __init__(self, *args: object) -> None:
+        super().__init__(*args)
