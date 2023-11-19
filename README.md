@@ -29,3 +29,6 @@ Every ticket needs:
 * When it was filed
 * Destination
 * Source (optional)
+
+Commands
+* 
