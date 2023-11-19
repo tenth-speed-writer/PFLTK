@@ -16,3 +16,11 @@ class UniqueRowNotFoundException(Exception):
     """
     def __init__(self, *args: object) -> None:
         super().__init__(*args)
+
+class UniqueRowAlreadyExistsException(Exception):
+    """
+    Represents an exception where an attempt is made to insert a
+    row with a unique value which already exists in that table.
+    """
+    def __init__(self, *args: object) -> None:
+        super().__init__(*args)
