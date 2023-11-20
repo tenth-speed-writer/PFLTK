@@ -1,12 +1,11 @@
-from db import DB
-import db
-from exceptions import \
+#from db import DB
+from .db import DB
+from .exceptions import \
     MultipleUniqueRowsException, \
     UniqueRowNotFoundException, \
     NoDataReturnedException, \
     UniqueRowAlreadyExistsException
 __all__ = [
-    "DB",
     "db",
     "MultipleUniqueRowsException",
     "UniqueRowNotFoundException",

@@ -1,15 +1,15 @@
 import sqlite3
 import datetime
-import db as data
+from . import db as data
 
 from typing import Tuple
-from exceptions import \
+from .exceptions import \
     UniqueRowNotFoundException, \
     MultipleUniqueRowsException, \
     UniqueRowAlreadyExistsException, \
     NoDataReturnedException
 
-from config import db_connection_string
+from ...config import db_connection_string
 
 # Spin up the database class based on the connection string in the config file
 # db = data.DB(db_connection_string)
