@@ -241,7 +241,7 @@ class DB:
         conn = self.get_connection()
         cursor = conn.cursor()
 
-        cursor.execute(creation_sql)
+        cursor.executescript(creation_sql)
         conn.commit()
         conn.close()
     
