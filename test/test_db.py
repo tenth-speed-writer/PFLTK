@@ -22,7 +22,7 @@ TEST_DB_CONN_STRING = ":memory:"
 # Setup behavior for each test is to open a new connection to an in-memory DB.
 # The proper pattern for pytest fixtures is that setup logic should happen
 # before a yield command, after which teardown logic is executed.
-@pytest.fixture
+@pytest.fixture()
 def db_fixture() -> data.DB:
     # Create fresh test DB environment
     db = data.DB(TEST_DB_CONN_STRING)
@@ -37,16 +37,17 @@ class TestWars:
     """
     class TestSelectLatestWar:
         """Contains tests for the wars.select_latest_war() method"""
-        def raises_no_data_returned_when_empty(db_fixture: data.DB):
+        def test_raises_no_data_returned_when_empty(self, db_fixture: data.DB):
             """
             Getting latest war when there is none shouldn't happen
             in practice, and should raise a specific exception.
             """
+            print(db_fixture.__dir__())
             with pytest.raises(NoDataReturnedException) as e:
                 conn = db_fixture.get_connection()
                 select_latest_war(conn)
             
-        def returns_war_when_one_exists(db_fixture: data.DB):
+        def test_returns_war_when_one_exists(self, db_fixture: data.DB):
             """If there's a row in the wars table, it returns it."""
             conn = db_fixture.get_connection()
 
@@ -60,7 +61,7 @@ class TestWars:
             assert latest_war_num == war_num
             assert latest_pulled_on == pulled_on
 
-        def returns_right_war_when_multiple_exist(db_fixture: data.DB):
+        def test_returns_right_war_when_multiple_exist(self, db_fixture: data.DB):
             """If there's multiple rows in 'wars', it returns the latest"""
             conn = db_fixture.get_connection()
 
@@ -81,7 +82,7 @@ class TestWars:
 
     class TestInsertWar:
         """Contains tests for the wars.insert_war() method"""
-        def test_single_valid_war(db_fixture: data.DB):
+        def test_single_valid_war(self, db_fixture: data.DB):
             """Should throw no errors when inserting a single valid war."""
             war_number = 32
             pulled_on = dt.now()
@@ -95,7 +96,7 @@ class TestWars:
             assert latest_num == war_number
             assert latest_date == pulled_on
         
-        def test_multiple_valid_wars(db_fixture: data.DB):
+        def test_multiple_valid_wars(self, db_fixture: data.DB):
             """Should throw no errors when inserting multiple valid wars."""
             conn = db_fixture.get_connection()
 
@@ -108,14 +109,14 @@ class TestWars:
             insert_war(war_num_2, pulled_on_2, conn)
 
 
-        def test_negative_war_number(db_fixture: data.DB):
+        def test_negative_war_number(self, db_fixture: data.DB):
             """Throws an exception when given a negative war number"""
             conn = db_fixture.get_connection()
             bad_war_number = -21
             with pytest.raises(Exception) as e:
                 insert_war(bad_war_number, dt.now(), conn)
 
-        def test_invalid_then_valid_war(db_fixture: data.DB):
+        def test_invalid_then_valid_war(self, db_fixture: data.DB):
             """
             Raises an exception when given a bad row, but
             then works when provided with a good row.
@@ -130,7 +131,7 @@ class TestWars:
             insert_war(good_war_num, dt.now(), conn)
                 
 
-        def test_valid_then_invalid_war(db_fixture: data.DB):
+        def test_valid_then_invalid_war(self, db_fixture: data.DB):
             """
             Inserts a good user, then raises an exception for a bad user
             """
@@ -143,7 +144,7 @@ class TestWars:
             with pytest.raises(Exception) as e:
                 insert_war(bad_war_num, dt.now(), conn)
 
-        def test_valid_then_past_war(db_fixture: data.DB):
+        def test_valid_then_past_war(self, db_fixture: data.DB):
             """
             Raises an exception when a past war is inserted after a current war
             """
