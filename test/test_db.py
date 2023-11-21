@@ -49,15 +49,11 @@ class TestWars:
     Contains tests for methods pertaining to the 'wars' table of the DB code.
     """
     class TestSelectLatestWar:
-        """Contains tests for the wars.select_latest_war() method"""
-        def test_raises_no_data_returned_when_empty(self, db_fixture: data.DB):
-            """
-            Getting latest war when there is none shouldn't happen
-            in practice, and should raise a specific exception.
-            """
-            with pytest.raises(NoDataReturnedException) as e:
-                conn = db_fixture.get_connection()
-                select_latest_war(conn)
+        def test_returns_none_when_no_war_exists(self, db_fixture: data.DB):
+            """Tests if it returns None when no war exists"""
+            conn = db_fixture.get_connection()
+            latest_war = select_latest_war(conn)
+            assert latest_war == None
             
         def test_returns_war_when_one_exists(self, db_fixture: data.DB):
             """If there's a row in the wars table, it returns it."""
@@ -104,7 +100,7 @@ class TestWars:
             insert_war(war_number, pulled_on, conn)
 
             # Gets the latest war correctly
-            latest_num, latest_date = select_latest_war()
+            latest_num, latest_date = select_latest_war(conn)
             assert latest_num == war_number
             assert latest_date == pulled_on
         
@@ -141,11 +137,15 @@ class TestWars:
                 insert_war(bad_war_num, dt.now(), conn)
 
             insert_war(good_war_num, dt.now(), conn)
+
+            latest_war, latest_pulled_on = select_latest_war(conn)
+
+            assert latest_war == good_war_num
                 
 
         def test_valid_then_invalid_war(self, db_fixture: data.DB):
             """
-            Inserts a good user, then raises an exception for a bad user
+            Inserts a good war, then raises an exception for a bad war
             """
             conn = db_fixture.get_connection()
             bad_war_num = -45
@@ -155,6 +155,9 @@ class TestWars:
 
             with pytest.raises(Exception) as e:
                 insert_war(bad_war_num, dt.now(), conn)
+
+            latest_war, latest_pulled_on = select_latest_war(conn)
+            assert latest_war == good_war_num
 
         def test_valid_then_past_war(self, db_fixture: data.DB):
             """
@@ -168,5 +171,8 @@ class TestWars:
 
             with pytest.raises(Exception):
                 insert_war(past_war_num, dt.now(), conn)
+
+            latest_war, latest_pulled_on = select_latest_war(conn)
+            assert latest_war == current_war_num
             
             

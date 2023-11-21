@@ -14,6 +14,21 @@ from ...config import db_connection_string
 # Spin up the database class based on the connection string in the config file
 # db = data.DB(db_connection_string)
 
+class NewerWarAlreadyExistsException(Exception):
+    """
+    Represents an instance in which a row cannot be submitted to the
+    'wars' table because a row with a higher war number already exists.
+    """
+    def __init__(
+            self,
+            proposed_war_number: int, 
+            latest_war_number:int
+        ) -> None:
+        message = \
+            f"Cannot create a row for war #{proposed_war_number}; " \
+            f"a newer entry already exists for war #{latest_war_number}."
+        super().__init__(message)
+
 def insert_war(
         war_number: int,
         last_fetched_on: datetime.datetime,
@@ -30,7 +45,7 @@ def insert_war(
         conn (sqlite3.Connection):
             An open SQLite3 connection object
     """
-    def war_already_exists() -> bool:
+    def _war_already_exists(war_num: int) -> bool:
         """
         Local function to test whether a war already exists in the database.
         """
@@ -39,14 +54,17 @@ def insert_war(
             WHERE war_number = ?
         """
         cursor = conn.cursor()
-        cursor.execute(does_it_exist_sql)
+        cursor.execute(
+            does_it_exist_sql, 
+            (war_num,)
+        )
         results = cursor.fetchall()
         if len(results) > 1:
             raise MultipleUniqueRowsException(f"Multiple rows exist for unique war number {war_number}")
         else:
             return len(results) == 1
         
-    def submit_new_war(war_number, last_fetched_on) -> None:
+    def _submit_new_war(war_number, last_fetched_on) -> None:
         """
         Local function which creates a new row in the 'wars' table.
         """
@@ -58,7 +76,7 @@ def insert_war(
                 ?
             )
         """
-    
+
         # Parse fetched-on date
         fetched_on_str = data.DB.format_date_for_db(last_fetched_on)
         
@@ -67,26 +85,50 @@ def insert_war(
         
         # Execute the command
         cursor.execute(
-            __sql=sql,
-            __parameters=(war_number, fetched_on_str,))
+            sql,
+            (war_number, fetched_on_str,)
+        )
         
         conn.commit()
     
-    if war_already_exists(war_number):
-        message = f"A row already exists for war number {war_number}"
+    # Assure the war number is valid
+    if (war_number < 0):
+        raise ValueError("war_number must be an integer not less than 0")
+    
+    # See if this war already exists
+    if (_war_already_exists(war_number)):
+        message = f"Entry for war number {war_number} already exists"
         raise UniqueRowAlreadyExistsException(message)
-    else:
-        submit_new_war(war_number, last_fetched_on)
+    
+    # See if a more recent war already exists
+    latest_war_tuple: Tuple[int, datetime.datetime] | None = \
+        select_latest_war(conn)
+    
+    # It's fine if the given war is newer or if there's no existing wars.
+    newer_war_exists = \
+        not(latest_war_tuple == None) and (latest_war_tuple[0] > war_number)
+    # Otherwise, raise an exception.
+    if newer_war_exists:
+        raise NewerWarAlreadyExistsException(
+            proposed_war_number=war_number,
+            latest_war_number=latest_war_tuple[0]
+        )
+    
+    # If neither rejecting condition is true, submit the given row
+    _submit_new_war(war_number, last_fetched_on)
     
 
-def select_latest_war(conn: sqlite3.Connection) -> Tuple[int, datetime.datetime]:
+def select_latest_war(conn: sqlite3.Connection) -> Tuple[int, datetime.datetime] | None:
     """
     Selects the number of the latest war, as well as when that data was pulled.
 
+    Will return None if there are no wars in the database when called.
+
     Returns:
-        Tuple[int, datetime.datetime]: 
+        Tuple[int, datetime.datetime] | None: 
         A tuple of (war number, date pulled) corresponding to the highest
         war number recorded in the 'wars' table and when it was added.
+        None if no values were found.
     """    
     # We use this format rather than a SELECT TOP (1) query so we can
     # add verification that there's only one entry for the current war.
@@ -104,16 +146,16 @@ def select_latest_war(conn: sqlite3.Connection) -> Tuple[int, datetime.datetime]
     cursor = conn.cursor()
     results = cursor.execute(latest_war_sql).fetchall()
 
-    # If it returned none or more than one, throw an exception
-    if len(results) == 0:
-        message = \
-            "No data found for latest war. " \
-            "Did 'wars' populate correctly on launch?"
-        raise NoDataReturnedException(message)
-    elif len(results) > 1:
-        # Otherwise, return the sole result
+    # Check how many results we got, expecting zero or one.
+    if len(results) > 1:
+        # Throw an exception if we somehow got multiple unique rows
         message = "Multiple results found for latest war; error likely"
         raise MultipleUniqueRowsException(message)
+    elif len(results) == 0:
+        # Return None if there's no data
+        return None
     else:
-        return results[0]["war_number"]
+        # Otherwise, return a tuple of (war_number, date_pulled)
+        war_num, pulled_on = results[0][0], data.DB.format_date_from_db(results[0][1])
+        return (war_num, pulled_on)
     
