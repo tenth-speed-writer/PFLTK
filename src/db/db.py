@@ -31,7 +31,7 @@ class DB:
         Returns:
             datetime.datetime: A datetime object corresponding to the provided string
         """
-        return datetime.datetime.fromisoformat(str)
+        return datetime.datetime.fromisoformat(dt)
 
     def get_connection(self) -> sqlite3.Connection:
         """
