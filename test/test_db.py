@@ -17,7 +17,7 @@ from datetime import datetime as dt
 
 # Default DB test environment is a an in-memory DB spun up before each test,
 # but this can be replaced with another environment in the future if needed.
-TEST_DB_CONN_STRING = ":memory:"
+TEST_DB_CONN_STRING = "test_storage.db"
 
 # Setup behavior for each test is to open a new connection to an in-memory DB.
 # The proper pattern for pytest fixtures is that setup logic should happen
@@ -31,6 +31,19 @@ def db_fixture() -> data.DB:
     # Yield until after test execution
     yield db
 
+    # After the test, reset the DB state by dropping everything and
+    # hoping that the .db file isn't corrupted by this silly command
+    drop_it_all_sql = \
+    """
+    PRAGMA writable_schema = 1;
+    delete from sqlite_master where type in ('table', 'index', 'trigger');
+    PRAGMA writable_schema = 0;
+    VACUUM;
+    """
+    conn = db.get_connection()
+    cursor = conn.cursor()
+    cursor.executescript(drop_it_all_sql)
+
 class TestWars:
     """
     Contains tests for methods pertaining to the 'wars' table of the DB code.
@@ -42,7 +55,6 @@ class TestWars:
             Getting latest war when there is none shouldn't happen
             in practice, and should raise a specific exception.
             """
-            print(db_fixture.__dir__())
             with pytest.raises(NoDataReturnedException) as e:
                 conn = db_fixture.get_connection()
                 select_latest_war(conn)
