@@ -14,16 +14,16 @@ db_connection_string = "pfltk.db" # A local SQLite3 file by default
 war_api_roots = SimpleNamespace()
 
 # Able URL
-war_api_roots.live_1 = 'https://war-service-live.foxholeservices.com/api/'
+war_api_roots.live_1 = 'https://war-service-live.foxholeservices.com/api/worldconquest/'
 
 # Bravo URL
-war_api_roots.live_2 = 'https://war-service-live-2.foxholeservices.com/api/'
+war_api_roots.live_2 = 'https://war-service-live-2.foxholeservices.com/api/worldconquest/'
 
 # Charlie URL
-war_api_roots.live_3 = 'https://war-service-live-3.foxholeservices.com/api/'
+war_api_roots.live_3 = 'https://war-service-live-3.foxholeservices.com/api/worldconquest/'
 
 # Dev server URL
-war_api_roots.dev = 'https://war-service-dev.foxholeservices.com/api/'
+war_api_roots.dev = 'https://war-service-dev.foxholeservices.com/api/worldconquest/'
 
 # Which of these links the app should use
 war_api_roots.selected = war_api_roots.live_1
