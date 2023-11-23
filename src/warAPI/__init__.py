@@ -22,15 +22,15 @@ def get_war() -> Tuple[int, datetime.datetime]:
     suffix = config.war_api_endpoints.war
     url = root + suffix
 
-    # Make request and fetch result
+    # Make the GET request and fetch the result
     response = requests.get(url)
     
-    # Make a note of the time
+    # Make a note of the time the request was completed
     pulled_on = datetime.datetime.now()
 
-    # Deserialize the content, which should have a .warNumber attribute
-    res_body = json.load(response.content)
-    war_num = res_body.warNumber
+    # Deserialize the content, which should have a 'warNumber' attribute
+    res_body = response.json()
+    war_num = res_body["warNumber"]
 
     # Return the war number and the time of the request
     return war_num, pulled_on
