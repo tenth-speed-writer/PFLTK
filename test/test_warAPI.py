@@ -9,3 +9,14 @@ class TestGetWar:
 
         assert 0 < war_num
         assert war_num < 1000
+
+class TestGetMaps:
+    def tests_gets_maps_correctly(self):
+        """Assures it can correctly get the list of map names"""
+
+        # There should be fingers in the result
+        map_to_check = "TheFingersHex"
+        results = api.get_maps()
+
+        # Check for fingers~
+        assert map_to_check in results

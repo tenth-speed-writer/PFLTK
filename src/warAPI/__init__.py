@@ -7,7 +7,7 @@ a new war has begun.
 import datetime
 import requests
 import json
-from typing import Tuple
+from typing import Tuple, List
 
 from ... import config
 
@@ -34,3 +34,15 @@ def get_war() -> Tuple[int, datetime.datetime]:
 
     # Return the war number and the time of the request
     return war_num, pulled_on
+
+def get_maps() -> List[str]:
+    # Assemble the URL for the /maps endpoint
+    root = config.war_api_roots.selected
+    suffix = config.war_api_endpoints.maps
+    url = root + suffix
+
+    # Make request to the /maps endpoint
+    response = requests.get(url)
+
+    # Deserialize and return the content
+    return response.json()
