@@ -1,6 +1,10 @@
 import pytest
 
-from ..src import warAPI as api
+import src.warAPI.get_icons
+import src.warAPI.get_labels
+import src.warAPI.get_maps
+
+from ..src.warAPI import get_war as api
 
 
 class TestGetWar:
@@ -19,7 +23,7 @@ class TestGetMaps:
 
         # There should be fingers in the result
         map_to_check = "TheFingersHex"
-        results = api.get_maps()
+        results = src.warAPI.get_maps.get_maps()
 
         # Check for fingers~
         assert map_to_check in results
@@ -35,7 +39,7 @@ class TestGetLabels:
     def test_gets_all_labels_correctly(self):
         """Assures it fetches lists of major labels"""
         # Get its labels
-        result = api.get_labels(
+        result = src.warAPI.get_labels.get_labels(
             map_name=self.map_hex,
             label_type="Both"
         )
@@ -50,7 +54,7 @@ class TestGetLabels:
     def test_gets_major_labels_correctly(self):
         """Assures it fetches a list of only major labels"""
         # Get its labels
-        result = api.get_labels(
+        result = src.warAPI.get_labels.get_labels(
             map_name=self.map_hex,
             label_type="Major"
         )
@@ -69,7 +73,7 @@ class TestGetLabels:
         # Assert the list of "text" attributes of the contents of
         # result["mapTextItems"] contains our desired minor label
         # and NOT our known major label.
-        result = api.get_labels(
+        result = src.warAPI.get_labels.get_labels(
             map_name=self.map_hex,
             label_type="Minor"
         )
@@ -86,7 +90,7 @@ class TestGetLabels:
         """
 
         with pytest.raises(ValueError):
-            api.get_labels(self.map_hex, "doobie")
+            src.warAPI.get_labels.get_labels(self.map_hex, "doobie")
     
 
 class TestGetIcons:
@@ -100,7 +104,7 @@ class TestGetIcons:
         Since these vary by war, we can't really test for specifics--just
         that it's able to return a correctly-formatted list of them.
         """
-        icons = api.get_icons(self.map_hex)
+        icons = src.warAPI.get_icons.get_icons(self.map_hex)
 
         # Check structure
         assert icons.__class__ == [].__class__
