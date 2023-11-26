@@ -2,6 +2,7 @@ import pytest
 
 from ..src import warAPI as api
 
+
 class TestGetWar:
     """Contains methods for testing the warAPI.get_war() method"""
     def test_gets_war_number_correctly(self):
@@ -22,6 +23,7 @@ class TestGetMaps:
 
         # Check for fingers~
         assert map_to_check in results
+
 
 class TestGetLabels:
     """Contains methods for testing the warAPI.get_labels() method"""
@@ -86,4 +88,35 @@ class TestGetLabels:
         with pytest.raises(ValueError):
             api.get_labels(self.map_hex, "doobie")
     
+
+class TestGetIcons:
+    """Contains methods for testing the warAPI.get_icons() method"""
+    map_hex = "TheFingersHex"
+    
+    def test_gets_icons(self):
+        """
+        Assures the script can correctly fetch the icons for a given hex.
+
+        Since these vary by war, we can't really test for specifics--just
+        that it's able to return a correctly-formatted list of them.
+        """
+        icons = api.get_icons(self.map_hex)
+
+        # Check structure
+        assert icons.__class__ == [].__class__
+        assert icons[0].__class__ == (None,).__class__
+        assert len(icons[0]) == 4
+
+        # Pull the first row
+        x, y, icon_type, flags = icons[0]
+
+        # Check that X and Y are formatted correctly
+        assert 0 <= x <= 1
+        assert 0 <= y <= 1
+        
+        # Check that icon_type is in the general index range
+        assert 0 <= icon_type <= 100
+        
+        # Check that the flag is in the range of a 6-bit integer (0-64)
+        assert 0 <= flags <= 64
     
