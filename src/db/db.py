@@ -156,6 +156,7 @@ class DB:
                 y REAL NOT NULL,
 
                 icon_type INTEGER NOT NULL,
+                flags INTEGER NOT NULL,
 
                 CONSTRAINT pk_icons
                 PRIMARY KEY (
