@@ -11,9 +11,14 @@ from .exceptions import \
     UniqueRowNotFoundException, \
     NoDataReturnedException, \
     UniqueRowAlreadyExistsException
+
+from . import wars
 from .wars import \
     NewerWarAlreadyExistsException
-from . import wars
+
+from . import maps
+from .maps import \
+    NoMapsForCurrentWarException
 
 __all__ = [
     # Core module and shared exceptions
@@ -25,5 +30,9 @@ __all__ = [
 
     # Wars module
     "wars",
-    "NewerWarAlreadyExistsException"
+    "NewerWarAlreadyExistsException",
+
+    # Maps module
+    "maps",
+    "NoMapsForCurrentWarException"
 ]
