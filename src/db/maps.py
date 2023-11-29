@@ -38,6 +38,10 @@ def insert_map(map_name: str, war_number: int) -> None:
     params = map_name, war_number
     cursor.execute(sql, params)
 
+    # Commit and close connection
+    conn.commit()
+    conn.close()
+
 def select_latest_maps() -> List[Tuple[str, int]]:
     """
     Returns a list of (map name, war number) tuples based
@@ -80,8 +84,10 @@ def select_latest_maps() -> List[Tuple[str, int]]:
         message = \
             f"No maps found for latest war (#{latest_war}). " \
             "Was PFL-TK initialized correctly?"
+        conn.close()
         raise NoMapsForCurrentWarException(message)
     else:
         # Otherwise, return the list of (map_name, war_num) tuples
+        conn.close()
         return results
     
