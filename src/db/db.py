@@ -82,9 +82,9 @@ class DB:
             );
 
             /*
-            Represents a major map label, of the kind used to distinguish the
+            Represents a map label, of the kind used to distinguish the
             individual sub-zones within each hex. Since map location data
-            doesn't include this value, we need to infer the closest major
+            doesn't include this value, we need to infer the closest known
             label to a given map point of interest based on distance.
 
             Distance is given here in terms of relative map
@@ -94,7 +94,7 @@ class DB:
             Since these are associated uniquely with the maps table, they're
             unique to a given hex in a given war at a unique x and y position.
             */
-            CREATE TABLE IF NOT EXISTS major_labels (
+            CREATE TABLE IF NOT EXISTS labels (
                 map_name TEXT NOT NULL,
                 war_number INTEGER NOT NULL,
                 label TEXT NOT NULL,
@@ -142,7 +142,7 @@ class DB:
             Since the API doesn't share specific site IDs or the unique sub-hex zone
             in which sites occur, the best we can do is use their x and y positions
             (given in term of relative map dimensions) to find their closest
-            associated major label on the map.
+            associated label on the map.
 
             This allows us to be as specific as "the Relic Base near Loggerhead"
             or "the Storage Depot near The Abandoned Ward" when describing origin
