@@ -1,3 +1,7 @@
+"""
+Contains methods and classes for interacting with the 'wars' table.
+"""
+
 import sqlite3
 import datetime
 from . import db as data
