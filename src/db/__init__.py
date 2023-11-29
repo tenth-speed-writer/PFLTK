@@ -11,10 +11,19 @@ from .exceptions import \
     UniqueRowNotFoundException, \
     NoDataReturnedException, \
     UniqueRowAlreadyExistsException
+from .wars import \
+    NewerWarAlreadyExistsException
+from . import wars
+
 __all__ = [
+    # Core module and shared exceptions
     "db",
     "MultipleUniqueRowsException",
     "UniqueRowNotFoundException",
     "NoDataReturnedException",
-    "UniqueRowAlreadyExistsException"
+    "UniqueRowAlreadyExistsException",
+
+    # Wars module
+    "wars",
+    "NewerWarAlreadyExistsException"
 ]

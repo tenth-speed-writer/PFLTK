@@ -11,7 +11,7 @@ __all__ = [
     "get_labels"
 ]
 
-from get_war import get_war
-from get_maps import get_maps
-from get_icons import get_icons
-from get_labels import get_labels
+from .get_war import get_war
+from .get_maps import get_maps
+from .get_icons import get_icons
+from .get_labels import get_labels
