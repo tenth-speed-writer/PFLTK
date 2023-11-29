@@ -1,7 +1,7 @@
 """
 Contains methods for interacting with the database instance which powers
 this application. By default this is a local SQLite file in its host
-environment, but this could hypothetically be replaced with a remote
+filesystem, but this could hypothetically be replaced with a remote
 connection string in the config.py file.
 """
 
@@ -20,6 +20,10 @@ from . import maps
 from .maps import \
     NoMapsForCurrentWarException
 
+from . import labels
+from .labels import \
+    NoLabelsForMapInCurrentWarException
+
 __all__ = [
     # Core module and shared exceptions
     "db",
@@ -34,5 +38,9 @@ __all__ = [
 
     # Maps module
     "maps",
-    "NoMapsForCurrentWarException"
+    "NoMapsForCurrentWarException",
+
+    # Labels module
+    "labels",
+    "NoLabelsForMapInCurrentWarException"
 ]
