@@ -39,7 +39,9 @@ def insert_map(map_name: str, war_number: int) -> None:
     cursor.execute(sql, params)
 
 def select_latest_maps() -> List[Tuple[str, int]]:
-    """_summary_
+    """
+    Returns a list of (map name, war number) tuples based
+    on the latest known war in the 'wars' table.
 
     Raises:
         NoMapsForCurrentWarException: Raised when there is no map data
@@ -69,9 +71,10 @@ def select_latest_maps() -> List[Tuple[str, int]]:
     cursor = conn.cursor()
     params = (latest_war,)
 
-    # Execute query
+    # Execute query and fetch to a list of tuples
     results = cursor.execute(sql, params).fetchall()
 
+    # Check if the result set was empty or populated
     if len(results) == 0:
         # If there were no results, raise an exception
         message = \
