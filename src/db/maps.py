@@ -17,7 +17,12 @@ class NoMapsForCurrentWarException(Exception):
     def __init__(self, *args: object) -> None:
         super().__init__(*args)
 
-def insert_map(map_name: str, war_number: int) -> None:
+def insert_map(
+        map_name: str, 
+        war_number: int,
+        conn: sqlite3.Connection = \
+            db.DB(config.db_connection_string).get_connection()
+) -> None:
     """
     Inserts a new row into the 'maps' table, representing a
     unique hex on the map of a uniquely identified war.
@@ -25,11 +30,10 @@ def insert_map(map_name: str, war_number: int) -> None:
         map_name (str): The systematic name of the
         hex in question (e.g. "TheFingersHex")
         war_number (int): The number of the war in which this map exists
+        conn (sqlite3.Connection): A live connection object. Grabs a connection
+        to the application's specified default DB connection string if an
+        alternative isn't specified (usually for testing purposes.)
     """
-    # Spin up a DB connection object
-    data = db.DB(config.db_connection_string)
-    conn = data.get_connection()
-
     # Define query and create cursor
     sql = "INSERT INTO maps VALUES (?, ?)"
     cursor = conn.cursor()
@@ -42,10 +46,18 @@ def insert_map(map_name: str, war_number: int) -> None:
     conn.commit()
     conn.close()
 
-def select_latest_maps() -> List[Tuple[str, int]]:
+def select_latest_maps(
+    conn: sqlite3.Connection = \
+        db.DB(config.db_connection_string)
+) -> List[Tuple[str, int]]:
     """
     Returns a list of (map name, war number) tuples based
     on the latest known war in the 'wars' table.
+
+    Args:
+        conn (sqlite3.connection): A live SQLite3 connection object. If not
+        specified, a connection will be generated automatically based on the
+        application's connection string as specified in the config files.
 
     Raises:
         NoMapsForCurrentWarException: Raised when there is no map data
@@ -56,10 +68,6 @@ def select_latest_maps() -> List[Tuple[str, int]]:
         List[Tuple[str, int]]: 
         A list of results as [(map_name, war_number), ...]
     """     
-    # Spin up a DB connection object
-    data = db.DB(config.db_connection_string)
-    conn = data.get_connection()
-
     # Identify the latest war number
     latest_war, latest_war_fetched_on = db.wars.select_latest_war()
 
