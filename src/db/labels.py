@@ -2,6 +2,8 @@
 Contains methods and classes for interacting with the 'labels' table.
 """
 
+import sqlite3
+
 from .. import db
 from ... import config
 from typing import List, Tuple
@@ -19,7 +21,8 @@ def insert_label(
         war_number: int,
         label: str, 
         x: float,
-        y: float
+        y: float,
+        conn: sqlite3.Connection
     ):
     """
     Inserts a row into the 'labels' table, uniquely identifying a specific
@@ -34,28 +37,29 @@ def insert_label(
         (i.e. the location name)
         x (float): The relative [0.0, 1.0] X position of the label
         y (float): The relative [0.0, 1.0] Y position of the label
+        conn (sqlite3.Connection): A live DB connection to which to write
     """
-    
-    # Generate a connection object
-    data = db.DB(config.db_connection_string)
-    conn = data.get_connection()
-
     # Define the query, cursor, and parameters
     sql = "INSERT INTO labels VALUES (?, ?, ?, ?, ?)"
     params = (map_name, war_number, label, x, y)
     cursor = conn.cursor()
 
-    # Execute the query
+    # Execute the query on the specified database
     cursor.execute(sql, params)
 
     # Commit changes and close connection
     conn.commit()
-    conn.close()
 
-def select_latest_labels_for_map(map_name: str) \
-    -> List[Tuple[str, int, str, float, float]]:
+def select_latest_labels_for_map(
+        map_name: str, 
+        conn: sqlite3.Connection
+    ) -> List[Tuple[str, int, str, float, float]]:
     """
     Returns a list of labels for a specified map tile in the latest war.
+
+    Args:
+        map_name (str): The systematic name of the map for which to search
+        conn (sqlite3.Connection): A live database connection object to query
 
     Raises:
         NoLabelsForMapInCurrentWarException: Raised if there exist
@@ -63,15 +67,11 @@ def select_latest_labels_for_map(map_name: str) \
         'war_number' in the 'wars' table.
 
     Returns:
-        List[Tuple[str, int, str, float, float ]]: A list of row tuples
+        List[Tuple[str, int, str, float, float]]: A list of row tuples
         of (map name, war number, label, x position, y position)
     """    
-    # Create a DB connection object
-    data = db.DB(config.db_connection_string)
-    conn = data.get_connection()
-
     # Get the number of the latest war in the DB
-    latest_war = db.wars.select_latest_war()
+    latest_war, latest_pulled_on = db.wars.select_latest_war(conn)
 
     # Define query, cursor, and parameters
     sql = """
