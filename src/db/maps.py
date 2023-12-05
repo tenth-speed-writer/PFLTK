@@ -42,9 +42,9 @@ def insert_map(
     params = map_name, war_number
     cursor.execute(sql, params)
 
-    # Commit and close connection
+    # Commit changes
     conn.commit()
-    conn.close()
+    
 
 def select_latest_maps(
     conn: sqlite3.Connection = \
@@ -69,7 +69,7 @@ def select_latest_maps(
         A list of results as [(map_name, war_number), ...]
     """     
     # Identify the latest war number
-    latest_war, latest_war_fetched_on = db.wars.select_latest_war()
+    latest_war, latest_war_fetched_on = db.wars.select_latest_war(conn)
 
     # Define query and create cursor
     sql = """
@@ -78,13 +78,16 @@ def select_latest_maps(
             war_number
         FROM maps
         WHERE 
-            war_number = {}
+            war_number = (
+                SELECT
+                    MAX(war_number)
+                FROM maps
+            )
     """
     cursor = conn.cursor()
-    params = (latest_war,)
 
     # Execute query and fetch to a list of tuples
-    results = cursor.execute(sql, params).fetchall()
+    results = cursor.execute(sql).fetchall()
 
     # Check if the result set was empty or populated
     if len(results) == 0:
