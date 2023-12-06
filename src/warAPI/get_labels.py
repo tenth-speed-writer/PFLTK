@@ -21,7 +21,7 @@ def get_labels(
 
     Returns:
         List[Tuple[str, int, int, str]]: A tuple containing
-        (label text, x, y, and label type)
+        (label text, x, y, label type)
     """
     # Assemble URL, including map name parameter
     root = config.war_api_roots.selected
@@ -31,6 +31,7 @@ def get_labels(
     # Make the request and parse the results to JSON.
     # Result format is: [("text", "x", "y", "mapMarkerType"), ...]
     results = requests.get(url).json()
+
 
     # Filter--if desired--by label type and return the list of tuples
     if label_type.lower() == "major":
