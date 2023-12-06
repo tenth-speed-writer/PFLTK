@@ -259,8 +259,10 @@ class TestWars:
 
             with pytest.raises(Exception) as e:
                 insert_war(bad_war_num, dt.now(), conn)
+                conn.commit()
 
             insert_war(good_war_num, dt.now(), conn)
+            conn.commit()
 
             latest_war, latest_pulled_on = select_latest_war(conn)
 
@@ -276,9 +278,11 @@ class TestWars:
             good_war_num = 32
 
             insert_war(good_war_num, dt.now(), conn)
+            conn.commit()
 
             with pytest.raises(Exception) as e:
                 insert_war(bad_war_num, dt.now(), conn)
+                conn.commit()
 
             latest_war, latest_pulled_on = select_latest_war(conn)
             assert latest_war == good_war_num
