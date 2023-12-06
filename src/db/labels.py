@@ -47,8 +47,6 @@ def insert_label(
     # Execute the query on the specified database
     cursor.execute(sql, params)
 
-    # Commit changes and close connection
-    conn.commit()
 
 def select_latest_labels_for_map(
         map_name: str, 

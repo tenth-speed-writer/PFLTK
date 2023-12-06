@@ -92,8 +92,6 @@ def insert_war(
             sql,
             (war_number, fetched_on_str,)
         )
-        
-        conn.commit()
     
     # Assure the war number is valid
     if (war_number < 0):

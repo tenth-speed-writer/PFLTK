@@ -41,9 +41,6 @@ def insert_map(
     # Execute query
     params = map_name, war_number
     cursor.execute(sql, params)
-
-    # Commit changes
-    conn.commit()
     
 
 def select_latest_maps(
