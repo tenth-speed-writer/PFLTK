@@ -376,3 +376,58 @@ class TestMaps:
             assert results[0] in new_maps
             assert results[1] in new_maps
             assert results[2] in new_maps
+
+
+class TestLabels:
+    class TestInsertLabel:
+        def test_inserts_valid_label(self):
+            pass
+
+        def test_raises_exception_for_repeat_row(self):
+            pass
+
+        def test_raises_exception_when_war_does_not_exist(self):
+            pass
+
+
+    class TestGetLabelsForMap:
+        def test_gets_labels_when_only_one_maps_icons_exist(self):
+            pass
+
+        def test_gets_labels_when_other_maps_exist(self):
+            pass
+
+        def test_gets_labels_when_map_exists_in_past_war(self):
+            pass
+
+        def test_raises_exception_when_maps_table_empty(self):
+            pass
+
+
+class TestIcons:
+    class TestInsertIcon:
+        def test_inserts_valid_icon(self):
+            pass
+
+        def test_raises_exception_for_repeat_row(self):
+            pass
+
+        def test_raises_exception_when_war_does_not_exist(self):
+            pass
+
+        def test_raises_exception_when_map_does_not_exist(self):
+            pass
+
+
+    class TestGetIconsForMap:
+        def test_gets_icons_when_only_one_maps_icons_exist(self):
+            pass
+
+        def test_gets_icons_when_other_maps_exist(self):
+            pass
+
+        def test_gets_icons_when_map_exists_in_past_war(self):
+            pass
+
+        def test_raises_exception_when_maps_table_empty(self):
+            pass
