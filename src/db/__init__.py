@@ -10,7 +10,8 @@ from .exceptions import \
     MultipleUniqueRowsException, \
     UniqueRowNotFoundException, \
     NoDataReturnedException, \
-    UniqueRowAlreadyExistsException
+    UniqueRowAlreadyExistsException, \
+    MapDoesNotExistInCurrentWarException
 
 from . import wars
 from .wars import \
@@ -24,6 +25,8 @@ from . import labels
 from .labels import \
     NoLabelsForMapInCurrentWarException
 
+from . import icons
+
 __all__ = [
     # Core module and shared exceptions
     "db",
@@ -31,6 +34,7 @@ __all__ = [
     "UniqueRowNotFoundException",
     "NoDataReturnedException",
     "UniqueRowAlreadyExistsException",
+    "MapDoesNotExistInCurrentWarException",
 
     # Wars module
     "wars",
@@ -43,4 +47,7 @@ __all__ = [
     # Labels module
     "labels",
     "NoLabelsForMapInCurrentWarException"
+
+    # Icons module
+    "icons"
 ]
