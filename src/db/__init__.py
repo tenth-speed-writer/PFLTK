@@ -15,17 +15,22 @@ from .exceptions import \
 
 from . import wars
 from .wars import \
+    War, \
     NewerWarAlreadyExistsException
 
 from . import maps
 from .maps import \
+    Map, \
     NoMapsForCurrentWarException
 
 from . import labels
 from .labels import \
+    Label, \
     NoLabelsForMapInCurrentWarException
 
 from . import icons
+from .icons import \
+    Icon
 
 __all__ = [
     # Core module and shared exceptions
@@ -38,16 +43,20 @@ __all__ = [
 
     # Wars module
     "wars",
+    "War",
     "NewerWarAlreadyExistsException",
 
     # Maps module
     "maps",
+    "Map",
     "NoMapsForCurrentWarException",
 
     # Labels module
     "labels",
-    "NoLabelsForMapInCurrentWarException"
+    "Label",
+    "NoLabelsForMapInCurrentWarException",
 
     # Icons module
+    "Icon",
     "icons"
 ]
