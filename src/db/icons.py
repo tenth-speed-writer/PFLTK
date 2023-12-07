@@ -6,7 +6,21 @@ import sqlite3
 from .. import db
 from ... import config
 from . import exceptions
-from typing import List, Tuple
+from typing import List, Tuple, NamedTuple
+
+
+class Icon(NamedTuple):
+    """
+    Represents a single map icon as stored as a row in the 'icons' table
+    of the ticker's database, including named attributes for legibility.
+    """
+    map_name: str
+    war_number: int
+    x: float
+    y: float
+    icon_type: int
+    flags: int
+
 
 def insert_icon(
         map_name: str,
@@ -49,7 +63,7 @@ def insert_icon(
 def get_latest_icons_for_map(
         map_name: str,
         conn: sqlite3.Connection
-) -> List[Tuple[str, int, float, float, int, int]]:
+) -> List[Icon]:
     """
     Selects a list of icons for a specific map hex in a specific war.
     Returns them in the format:
@@ -98,8 +112,8 @@ def get_latest_icons_for_map(
     cursor = conn.cursor()
     params = (map_name, latest_war)
 
-    # Execute query, capture result, and return
+    # Execute query, capture result as a list of named tuples, and return
     result = cursor.execute(query, params)
-    icons = result.fetchall()
+    icons = [Icon(*row) for row in result.fetchall()]
 
     return icons

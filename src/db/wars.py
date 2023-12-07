@@ -6,7 +6,7 @@ import sqlite3
 import datetime
 from . import db as data
 
-from typing import Tuple
+from typing import Tuple, NamedTuple
 from .exceptions import \
     UniqueRowNotFoundException, \
     MultipleUniqueRowsException, \
@@ -15,8 +15,14 @@ from .exceptions import \
 
 from ...config import db_connection_string
 
-# Spin up the database class based on the connection string in the config file
-# db = data.DB(db_connection_string)
+class War(NamedTuple):
+    """
+    Represents a single instance of a war as represented
+    in the ticker's database, formatted in table-wise order
+    and given named attributes for legibility.
+    """
+    war_number: int
+    pulled_on: datetime.datetime
 
 class NewerWarAlreadyExistsException(Exception):
     """
@@ -120,7 +126,7 @@ def insert_war(
     _submit_new_war(war_number, last_fetched_on)
     
 
-def select_latest_war(conn: sqlite3.Connection) -> Tuple[int, datetime.datetime] | None:
+def select_latest_war(conn: sqlite3.Connection) -> War | None:
     """
     Selects the number of the latest war, as well as when that data was pulled.
 
@@ -157,7 +163,7 @@ def select_latest_war(conn: sqlite3.Connection) -> Tuple[int, datetime.datetime]
         # Return None if there's no data
         return None
     else:
-        # Otherwise, return a tuple of (war_number, date_pulled)
+        # Otherwise, return a named tuple of (war_number, date_pulled)
         war_num, pulled_on = results[0][0], data.DB.format_date_from_db(results[0][1])
-        return (war_num, pulled_on)
+        return War(war_num, pulled_on)
     

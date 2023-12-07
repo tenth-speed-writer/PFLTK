@@ -4,9 +4,19 @@ Contains methods and classes for interacting with the 'maps' table.
 
 import sqlite3
 
-from typing import Tuple, List
+from typing import Tuple, List, NamedTuple
 from .. import db
 from ... import config
+
+
+class Map(NamedTuple):
+    """
+    Represents a single map uniquely identified in a single war,
+    formatted as a row in the ticker's database, given attribute
+    names for legibility.
+    """
+    map_name: str
+    war_number: int
 
 
 class NoMapsForCurrentWarException(Exception):
@@ -46,7 +56,7 @@ def insert_map(
 def select_latest_maps(
     conn: sqlite3.Connection = \
         db.DB(config.db_connection_string)
-) -> List[Tuple[str, int]]:
+) -> List[Map]:
     """
     Returns a list of (map name, war number) tuples based
     on the latest known war in the 'wars' table.
@@ -62,7 +72,7 @@ def select_latest_maps(
         because no map data has yet been inserted into the database.
 
     Returns:
-        List[Tuple[str, int]]: 
+        List[Map]: 
         A list of results as [(map_name, war_number), ...]
     """     
     # Identify the latest war number
@@ -95,5 +105,5 @@ def select_latest_maps(
         raise NoMapsForCurrentWarException(message)
     else:
         # Otherwise, return the list of (map_name, war_num) tuples
-        return results
+        return [Map(*result) for result in results]
     

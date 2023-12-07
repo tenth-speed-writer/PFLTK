@@ -6,7 +6,20 @@ import sqlite3
 
 from .. import db
 from ... import config
-from typing import List, Tuple
+from typing import List, Tuple, NamedTuple
+
+
+class Label(NamedTuple):
+    """
+    Represents a single instance of a map label as stored in the
+    ticker's database, including named attributes for legibility.
+    """
+    map_name: str
+    war_number: int
+    label: str
+    x: float
+    y:float
+
 
 class NoLabelsForMapInCurrentWarException(Exception):
     """
@@ -52,7 +65,7 @@ def insert_label(
 def select_latest_labels_for_map(
         map_name: str, 
         conn: sqlite3.Connection
-    ) -> List[Tuple[str, int, str, float, float]]:
+    ) -> List[Label]:
     """
     Returns a list of labels for a specified map tile in the latest war.
 
@@ -66,8 +79,7 @@ def select_latest_labels_for_map(
         'war_number' in the 'wars' table.
 
     Returns:
-        List[Tuple[str, int, str, float, float]]: A list of row tuples
-        of (map name, war number, label, x position, y position)
+        Label: a list of named tuples of (map_name, war_number, label, x, y)
     """    
     # Get the number of the latest war in the DB
     latest_war, latest_pulled_on = db.wars.select_latest_war(conn)
@@ -99,5 +111,5 @@ def select_latest_labels_for_map(
             "Did PFL-TK initialize correctly?"
         raise NoLabelsForMapInCurrentWarException(message)
     else:
-        # Otherwise, return them
-        return results
+        # Otherwise, return the rows as named tuples
+        return [Label(*row) for row in results]
