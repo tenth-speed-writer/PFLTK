@@ -45,6 +45,7 @@ class MapDoesNotExistInCurrentWarException(Exception):
     or in absence of the maps stage of initialization being completed.
     """
     def __init__(
+        self,
         map_name: str,
         last_known_war: int|None = None
     ) -> None:
