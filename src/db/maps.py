@@ -8,6 +8,7 @@ from typing import Tuple, List, NamedTuple
 from .. import db
 from ... import config
 
+from . import exceptions
 
 class Map(NamedTuple):
     """
@@ -99,6 +100,10 @@ def select_latest_maps(
     # Check if the result set was empty or populated
     if len(results) == 0:
         # If there were no results, raise an exception
+        message = \
+            f"No maps found. Was PFL-TK initialized correctly?"
+        raise exceptions.NoDataReturnedException(message)
+    elif max([Map(*map_).war_number for map_ in results]) < latest_war:
         message = \
             f"No maps found for latest war (#{latest_war}). " \
             "Was PFL-TK initialized correctly?"

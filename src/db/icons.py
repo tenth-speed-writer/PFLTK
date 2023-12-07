@@ -85,7 +85,7 @@ def get_latest_icons_for_map(
     
     # Make sure that the map we asked for exists in the current war.
     latest_maps = db.maps.select_latest_maps(conn)
-    if map_name not in [map_[0] for map_ in latest_maps]:
+    if map_name not in [map_.map_name for map_ in latest_maps]:
         # Raise a specific exception if it doesn't.
         #
         # Note here that if this fails because there exist no rows
