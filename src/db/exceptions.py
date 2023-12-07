@@ -54,13 +54,15 @@ class MapDoesNotExistInCurrentWarException(Exception):
             message = \
                 f"A request was made referring to map {map_name}; " \
                 f"however, no row exists in the 'maps' table for " \
-                f"{map_name} in the current war. The last known war "\
-                f"in which this map occurred was {str(last_known_war)}."
+                f"{map_name} in the current war. The last known war " \
+                f"in which this map occurred was {str(last_known_war)}. " \
+                f"Was the 'maps' table initialized correctly for this war?"
         else:
             message = \
                 f"A request was made referring to map {map_name}; " \
                 f"however, no row exists in the 'maps' table for " \
-                f"{map_name} in the current war. The last known war " \
-                f"in which this map occurred is unknown."
+                f"{map_name} in the current war. The last war " \
+                f"in which this map occurred is unknown. " \
+                f"Was the 'maps' table initialized correctly for this war?"
         
         super().__init__(message)
