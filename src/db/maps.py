@@ -92,10 +92,8 @@ def select_latest_maps(
         message = \
             f"No maps found for latest war (#{latest_war}). " \
             "Was PFL-TK initialized correctly?"
-        conn.close()
         raise NoMapsForCurrentWarException(message)
     else:
         # Otherwise, return the list of (map_name, war_num) tuples
-        conn.close()
         return results
     

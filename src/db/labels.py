@@ -42,6 +42,7 @@ def insert_label(
     # Define the query, cursor, and parameters
     sql = "INSERT INTO labels VALUES (?, ?, ?, ?, ?)"
     params = (map_name, war_number, label, x, y)
+
     cursor = conn.cursor()
 
     # Execute the query on the specified database
@@ -73,13 +74,12 @@ def select_latest_labels_for_map(
 
     # Define query, cursor, and parameters
     sql = """
-        SELECT (
+        SELECT
             map_name,
             war_number,
             label,
             x,
             y
-        )
         FROM labels
         WHERE 
             map_name = ?
@@ -94,7 +94,6 @@ def select_latest_labels_for_map(
     # Check whether we got any results
     if len(results) == 0:
         # If not, raise an exception
-        conn.close()
         message = \
             f"No labels found for map {map_name} in latest war (#{latest_war})." \
             "Did PFL-TK initialize correctly?"
