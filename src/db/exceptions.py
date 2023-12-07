@@ -44,9 +44,6 @@ class MapDoesNotExistInCurrentWarException(Exception):
     Indicates that a call was made referring to maps in the current war before
     or in absence of the maps stage of initialization being completed.
     """
-    # def __init__(self, *args: object) -> None:
-    #     super().__init__(*args)
-
     def __init__(
         map_name: str,
         last_known_war: int|None = None
