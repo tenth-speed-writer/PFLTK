@@ -5,6 +5,7 @@ import sqlite3
 
 from .. import db
 from ... import config
+from . import exceptions
 from typing import List, Tuple
 
 def insert_icon(
@@ -67,6 +68,23 @@ def get_latest_icons_for_map(
     # Get number of latest active war
     latest_war, latest_war_fetched_on = \
         db.wars.select_latest_war(conn)
+    
+    # Make sure that the map we asked for exists in the current war.
+    latest_maps = db.maps.select_latest_maps(conn)
+    if map_name not in [map_[0] for map_ in latest_maps]:
+        # Raise a specific exception if it doesn't.
+        #
+        # Note here that if this fails because there exist no rows
+        # in the 'maps' table for the current war, the previous step
+        # will instead fail with an a NoMapsForCurrentWar exception.
+        # 
+        # This can be useful for discerning between "I asked for a
+        # map that existed before but doesn't right now" and "my maps
+        # table simply never initialized correctly for this war."
+        raise exceptions.MapDoesNotExistInCurrentWarException(
+            map_name,
+            latest_war
+        )
 
     # Define query
     query = """
@@ -80,7 +98,8 @@ def get_latest_icons_for_map(
     cursor = conn.cursor()
     params = (map_name, latest_war)
 
-    # Execute query and return results list
+    # Execute query, capture result, and return
     result = cursor.execute(query, params)
+    icons = result.fetchall()
 
-    return result.fetchall()
+    return icons
