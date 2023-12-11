@@ -159,14 +159,14 @@ class DB:
             objective_description TEXT NOT NULL,
             created_on TEXT NOT NULL,
 
-            CONSTRAINT fk_ticket_destination_map
+            CONSTRAINT fk_ticket_destination_label
             FOREIGN KEY (
                 destination_map_name,
                 war_number,
                 destination_x,
                 destination_y
             )
-            REFERENCES icons (
+            REFERENCES labels (
                 map_name,
                 war_number,
                 x,
@@ -175,14 +175,14 @@ class DB:
             ON UPDATE CASCADE
             ON DELETE CASCADE,
 
-            CONSTRAINT fk_ticket_origin_map
+            CONSTRAINT fk_ticket_origin_label
             FOREIGN KEY (
                 origin_map_name,
                 war_number,
                 origin_x,
                 origin_y
             )
-            REFERENCES icons (
+            REFERENCES labels (
                 map_name,
                 war_number,
                 x,
