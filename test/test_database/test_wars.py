@@ -1,8 +1,11 @@
 import pytest
 import datetime
 
-from ...src import db as data
-from ...src.db import \
+#from ...src import db as data
+from src import db as data
+
+#from ...src.db import \
+from src.db import \
     NewerWarAlreadyExistsException, \
     UniqueRowAlreadyExistsException, \
     War
