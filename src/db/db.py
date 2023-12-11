@@ -144,7 +144,7 @@ class DB:
         */
         CREATE TABLE IF NOT EXISTS tickets (
             ticket_number INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-            war_number INT NOT NULL,
+            war_number INTEGER NOT NULL,
 
             destination_map_name TEXT NOT NULL,
             destination_x REAL NOT NULL,
