@@ -6,7 +6,6 @@ import sqlite3
 
 from typing import Tuple, List, NamedTuple
 from .. import db
-from ... import config
 
 from . import exceptions
 
@@ -31,8 +30,7 @@ class NoMapsForCurrentWarException(Exception):
 def insert_map(
         map_name: str, 
         war_number: int,
-        conn: sqlite3.Connection = \
-            db.DB(config.db_connection_string).get_connection()
+        conn: sqlite3.Connection
 ) -> None:
     """
     Inserts a new row into the 'maps' table, representing a
@@ -54,10 +52,7 @@ def insert_map(
     cursor.execute(sql, params)
     
 
-def select_latest_maps(
-    conn: sqlite3.Connection = \
-        db.DB(config.db_connection_string)
-) -> List[Map]:
+def select_latest_maps(conn: sqlite3.Connection) -> List[Map]:
     """
     Returns a list of (map name, war number) tuples based
     on the latest known war in the 'wars' table.

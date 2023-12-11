@@ -1,9 +1,5 @@
-from ... import config
-
-
+import config
 import requests
-
-
 from typing import List
 
 
@@ -21,7 +17,7 @@ def get_maps() -> List[str]:
     url = root + suffix
 
     # Make request to the /maps endpoint
-    response = requests.get(url)
+    response = requests.get(url, timeout=30)
 
     # Deserialize and return the content
     return response.json()

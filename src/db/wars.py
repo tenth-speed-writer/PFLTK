@@ -13,8 +13,6 @@ from .exceptions import \
     UniqueRowAlreadyExistsException, \
     NoDataReturnedException
 
-from ...config import db_connection_string
-
 class War(NamedTuple):
     """
     Represents a single instance of a war as represented

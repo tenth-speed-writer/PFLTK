@@ -1,9 +1,6 @@
-from ... import config
-
-
+#from ... import config
+import config
 import requests
-
-
 import datetime
 from typing import Tuple
 
@@ -20,7 +17,7 @@ def get_war() -> Tuple[int, datetime.datetime]:
     url = root + suffix
 
     # Make the GET request and fetch the result
-    response = requests.get(url)
+    response = requests.get(url, timeout=30)
 
     # Make a note of the time the request was completed
     pulled_on = datetime.datetime.now()

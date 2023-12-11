@@ -9,6 +9,25 @@ from .test_data import \
     VALID_ICONS, \
     VALID_LABELS
 
+# A slightly unwise script which purges a SQLite database
+# and totally definitely probably doesn't corrupt it. :)
+drop_it_all_sql = \
+    """
+    PRAGMA writable_schema = 1;
+    
+    DELETE 
+    FROM sqlite_master 
+    WHERE type IN (
+        'table',
+        'index',
+        'trigger'
+    );
+
+    PRAGMA writable_schema = 0;
+    
+    VACUUM;
+    """
+
 @pytest.fixture(
     scope="function",
     name="foo"
@@ -37,22 +56,7 @@ def database_fixture():
 
     # After the test, reset the DB state by dropping everything and
     # hoping that the .db file isn't corrupted by this silly command
-    drop_it_all_sql = \
-    """
-    PRAGMA writable_schema = 1;
     
-    DELETE 
-    FROM sqlite_master 
-    WHERE type IN (
-        'table',
-        'index',
-        'trigger'
-    );
-
-    PRAGMA writable_schema = 0;
-    
-    VACUUM;
-    """
     conn = db.get_connection()
     cursor = conn.cursor()
     cursor.executescript(drop_it_all_sql)

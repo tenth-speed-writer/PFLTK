@@ -5,7 +5,6 @@ Contains methods and classes for interacting with the 'labels' table.
 import sqlite3
 
 from .. import db
-from ... import config
 from typing import List, Tuple, NamedTuple
 
 
@@ -18,7 +17,7 @@ class Label(NamedTuple):
     war_number: int
     label: str
     x: float
-    y:float
+    y: float
 
 
 class NoLabelsForMapInCurrentWarException(Exception):

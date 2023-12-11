@@ -4,7 +4,6 @@ Contains methods and classes for interacting with the 'icons' table.
 import sqlite3
 
 from .. import db
-from ... import config
 from . import exceptions
 from typing import List, Tuple, NamedTuple
 

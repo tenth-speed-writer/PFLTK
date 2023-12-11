@@ -1,9 +1,5 @@
-from ... import config
-
-
+import config
 import requests
-
-
 from typing import List, Tuple
 
 
@@ -28,7 +24,7 @@ def get_icons(map_name: str) -> List[Tuple[float, float, int, int]]:
     url = root + suffix
 
     # Make request and get .mapItems from the result body
-    results = requests.get(url).json()
+    results = requests.get(url, timeout=30).json()
     map_items = results["mapItems"]
 
     return [

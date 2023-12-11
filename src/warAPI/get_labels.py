@@ -1,9 +1,5 @@
-from ... import config
-
-
+import config
 import requests
-
-
 from typing import List, Tuple
 
 
@@ -30,7 +26,7 @@ def get_labels(
 
     # Make the request and parse the results to JSON.
     # Result format is: [("text", "x", "y", "mapMarkerType"), ...]
-    results = requests.get(url).json()
+    results = requests.get(url, timeout=30).json()
 
 
     # Filter--if desired--by label type and return the list of tuples
