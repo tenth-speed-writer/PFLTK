@@ -32,6 +32,9 @@ from . import icons
 from .icons import \
     Icon
 
+from . import tickets
+from .tickets import Ticket
+
 __all__ = [
     # Core module and shared exceptions
     "db",
@@ -58,5 +61,9 @@ __all__ = [
 
     # Icons module
     "Icon",
-    "icons"
+    "icons",
+
+    # Tickets module
+    "Ticket",
+    "tickets"
 ]
