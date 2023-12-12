@@ -33,7 +33,9 @@ from .icons import \
     Icon
 
 from . import tickets
-from .tickets import Ticket
+from .tickets import \
+    Ticket, \
+    CannotCreateTicketForWarException
 
 __all__ = [
     # Core module and shared exceptions
@@ -65,5 +67,6 @@ __all__ = [
 
     # Tickets module
     "Ticket",
-    "tickets"
+    "tickets",
+    "CannotCreateTicketForWarException"
 ]

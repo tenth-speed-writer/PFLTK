@@ -67,3 +67,13 @@ class MapDoesNotExistInCurrentWarException(Exception):
                 f"Was the 'maps' table initialized correctly for this war?"
         
         super().__init__(message)
+
+
+class MapDoesNotExistException(Exception):
+    """
+    Represents an instance in which a map specified
+    in a request does not exist in any war on record.
+    """
+    def __init__(self, *args: object) -> None:
+        super().__init__(*args)
+    
