@@ -7,7 +7,7 @@ from datetime import datetime
 from collections import NamedTuple
 from exceptions import \
     UniqueRowNotFoundException, \
-    UniqueRowAlreadyExistsException
+    MultipleUniqueRowsException
 
 class Ticket(NamedTuple):
     """Represents a single Ticket as it exists in memory or in the database."""
@@ -30,7 +30,10 @@ class Ticket(NamedTuple):
     objective_description: str
     created_on: datetime
 
-def insert_ticket(ticket: Ticket, conn: sqlite3.Connection):
+def insert_ticket(
+    ticket: Ticket, 
+    conn: sqlite3.Connection
+) -> None:
     """
     Inserts a new ticket into the database.
 
@@ -73,11 +76,12 @@ def insert_ticket(ticket: Ticket, conn: sqlite3.Connection):
             ticket.objective_description,
             ticket.created_on
         )
+        
     
     # In either case: create a cursor and execute the query
     cursor = conn.cursor()
-    cursor.execute(query, params)
 
+    cursor.execute(query, params)
     conn.commit()
 
 def select_ticket(
@@ -109,7 +113,7 @@ def select_ticket(
         raise UniqueRowNotFoundException(message)
     elif len(results) > 1:
         message = f"Duplicate rows found for unique ticket ID {ticket_number}"
-        raise UniqueRowAlreadyExistsException(message)
+        raise MultipleUniqueRowsException(message)
     
     # Otherwise, return the result as a named tuple
     return Ticket(*results[0])
