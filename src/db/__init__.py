@@ -37,6 +37,10 @@ from .tickets import \
     Ticket, \
     CannotCreateTicketForWarException
 
+from . import commands
+from .commands import \
+    CommandData
+
 __all__ = [
     # Core module and shared exceptions
     "db",
@@ -69,4 +73,8 @@ __all__ = [
     "Ticket",
     "tickets",
     "CannotCreateTicketForWarException"
+
+    # Commands module
+    "CommandData",
+    "commands"
 ]
