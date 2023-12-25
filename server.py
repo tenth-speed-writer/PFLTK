@@ -34,8 +34,9 @@ class PFLTK_DiscordClient(discord.Client):
         if message.author != own_name:
             await message.channel.send(f"Message heard from author {message.author}. You said:\n{message.content}")
 
-client = PFLTK_DiscordClient(intents=intents)
-client.run(token=token)
+if __name__ == '__main__':
+    client = PFLTK_DiscordClient(intents=intents)
+    client.run(token=token)
 
 # # Initialize the client using the specified intents
 # client = discord.Client(intents=intents)
