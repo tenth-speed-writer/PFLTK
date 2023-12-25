@@ -1,8 +1,8 @@
 import pytest
 import sqlite3
 
-from ... import db as data
-from .test_data import \
+import src.db as data
+from test.test_database.test_data import \
     TEST_DB_CONN_STRING, \
     VALID_WAR, \
     VALID_MAPS, \

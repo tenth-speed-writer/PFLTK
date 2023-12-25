@@ -1,18 +1,15 @@
 import pytest
 import datetime
 
-#from ...src import db as data
 from src import db as data
-
-#from ...src.db import \
 from src.db import \
     NewerWarAlreadyExistsException, \
     UniqueRowAlreadyExistsException, \
     War
-from .fixtures import \
+from fixtures import \
     database_fixture, \
     valid_war_fixture
-from .test_data import VALID_WAR
+from test_data import VALID_WAR
 
 def test_inserts_valid_war_into_empty_table(database_fixture):
     """Causes no issue when inserting a valid war into an empty table."""

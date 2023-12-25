@@ -1,7 +1,7 @@
 import datetime
 
 from typing import List, Tuple
-from ...src.db import War, Map, Icon, Label
+from src.db import War, Map, Icon, Label
 
 # Default DB test environment is a an in-memory DB spun up before each test,
 # but this can be replaced with another environment in the future if needed.

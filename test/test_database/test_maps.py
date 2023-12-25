@@ -2,12 +2,12 @@ import sqlite3
 import pytest
 import datetime
 
-from .fixtures import *
-from .test_data import \
+from fixtures import *
+from test_data import \
     VALID_MAPS, \
     VALID_WAR
-from ...src import db as data
-from ...src.db import \
+from src import db as data
+from src.db import \
     NoDataReturnedException, \
     War
 

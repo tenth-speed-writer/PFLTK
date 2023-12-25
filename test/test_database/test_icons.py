@@ -1,17 +1,17 @@
 import datetime
 import pytest
 
-from ...src import db as data
-from ...src.db import \
+from src import db as data
+from src.db import \
     War, \
     Map, \
     Icon
-from .fixtures import \
+from fixtures import \
     database_fixture, \
     valid_war_fixture, \
     valid_maps_fixture, \
     valid_icons_fixture
-from .test_data import \
+from test_data import \
     VALID_ICONS, \
     VALID_MAPS, \
     VALID_WAR

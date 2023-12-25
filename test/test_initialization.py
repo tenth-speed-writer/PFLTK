@@ -1,10 +1,12 @@
 import pytest
 import sqlite3
 
-from ..src import initialization
-from ..src import db as data
+# from ..src import initialization
+# from ..src import db as data
+from src import initialization
+from src import db as data
 
-from .test_database.fixtures import TEST_DB_CONN_STRING, drop_it_all_sql
+from test.test_database.fixtures import TEST_DB_CONN_STRING, drop_it_all_sql
 
 @pytest.fixture
 def test_db_teardown():

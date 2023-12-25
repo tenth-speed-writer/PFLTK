@@ -1,13 +1,13 @@
 import pytest
 
 #from .fixtures import *
-from .fixtures import \
+from fixtures import \
     database_fixture, \
     valid_war_fixture, \
     valid_maps_fixture, \
     valid_labels_fixture
-from ...src import db as data
-from .test_data import \
+from src import db as data
+from test_data import \
     VALID_MAPS, \
     VALID_LABELS
 

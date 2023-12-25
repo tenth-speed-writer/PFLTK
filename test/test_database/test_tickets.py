@@ -1,13 +1,13 @@
 import pytest
 import datetime
 from typing import List
-from ...src import db as data
-from ...src.db import \
+from src import db as data
+from src.db import \
     War, \
     Map, \
     Label, \
     Ticket
-from .fixtures import \
+from fixtures import \
     database_fixture, \
     valid_war_fixture, \
     valid_maps_fixture, \
