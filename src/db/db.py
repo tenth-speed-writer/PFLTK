@@ -191,6 +191,16 @@ class DB:
             ON UPDATE CASCADE
             ON DELETE CASCADE
         );
+
+        CREATE TABLE IF NOT EXISTS commands (
+            message_id INTEGER NOT NULL PRIMARY KEY,
+            command TEXT NOT NULL,
+            user INTEGER NOT NULL,
+            guild TEXT NOT NULL,
+            channel TEXT NOT NULL,
+            created_at TEXT NOT NULL,
+            content TEXT NOT NULL
+        )
     """
 
     @staticmethod
