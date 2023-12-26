@@ -1,7 +1,8 @@
 import datetime
 
 from typing import List, Tuple
-from src.db import War, Map, Icon, Label
+from src.db import War, Map, Icon, Label, CommandData, User
+from src.db.users import Role
 
 # Default DB test environment is a an in-memory DB spun up before each test,
 # but this can be replaced with another environment in the future if needed.
@@ -36,3 +37,41 @@ VALID_LABELS: List[Tuple[str, int, str, float, float]] = [
     Label(VALID_MAPS[2][0], VALID_MAPS[2][1], "Junk A", 0.24, 0.398),
     Label(VALID_MAPS[2][0], VALID_MAPS[2][1], "Junk B", 0.94, 0.211)
 ]
+
+TEST_GUILD_NAME = "test_guild"
+
+VALID_USER_TEAMSTER = User(
+    user_id=42,
+    guild=TEST_GUILD_NAME,
+    role=Role.TEAMSTER
+)
+
+VALID_USER_SUBMITTER = User(
+    user_id=69,
+    guild=TEST_GUILD_NAME,
+    role=Role.SUBMITTER
+)
+
+VALID_USER_SUPERVISOR = User(
+    user_id=420,
+    guild=TEST_GUILD_NAME,
+    role=Role.SUPERVISOR
+)
+
+VALID_USER_ADMIN = User(
+    user_id=80085,
+    guild=TEST_GUILD_NAME,
+    role=Role.ADMIN
+)
+
+TEST_CHANNEL_NAME = "test-channel"
+
+VALID_UNTYPED_COMMAND_DATA = CommandData(
+    id=42,
+    command="dummy",
+    user=VALID_USER_SUBMITTER,
+    guild=TEST_GUILD_NAME,
+    channel=TEST_CHANNEL_NAME,
+    created_at=datetime.datetime.now,
+    content="!dummy verb arg1 arg2"
+)
