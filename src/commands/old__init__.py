@@ -7,7 +7,7 @@ If it's a slash command (/thing) or bang command (!thing), it lives here! :)
 """
 from typing import List
 
-from src.commands.commands import Command, UnsupportedVerbException
+from src.commands.command import Command, UnsupportedVerbException
 
 class UserAlreadyHasRoleException(Exception):
     """

@@ -34,7 +34,7 @@ class User(NamedTuple):
     guild: str
     role: Role
 
-def insert_or_update_user(user: User, conn: sqlite3.connection) -> None:
+def insert_user_role_on_server(user: User, conn: sqlite3.connection) -> None:
     """
     Inserts a new row into the 'users' table, provided with the user's
     discord ID, the role to give them, and the server on which to give it.
@@ -53,7 +53,7 @@ def insert_or_update_user(user: User, conn: sqlite3.connection) -> None:
     cursor = conn.cursor()
     cursor.execute(query, params)
 
-def select_user_role(user_id: int, guild: str, conn: sqlite3.Connection) -> Role:
+def select_user_role_on_server(user_id: int, guild: str, conn: sqlite3.Connection) -> Role:
     """
     Selects the role of a given user on a given server by their user ID
     and the name of the server in question. Throws a specific exception
@@ -96,3 +96,31 @@ def select_user_role(user_id: int, guild: str, conn: sqlite3.Connection) -> Role
     # Otherwise return the sole result as an enum value
     else:
         return Role[results[0]]
+
+def delete_user_role_on_server(
+    user_id: int,
+    guild: str,
+    conn: sqlite3.Connection) -> None:
+    """
+    Removes the role for a specific user on a given server from the
+    'users' table, effectively removing them from the list of those
+    allowed to interact with this bot on that server.
+
+    Args:
+        user_id (int): The ID of the user whose role should be deleted.
+        guild (str): The name of the server on which that role exists.
+        conn (sqlite3.Connection): An active SQLite3 connection object
+        connected to the application database, from which to delete.
+    """    
+    # Define query and parameters
+    query = """
+        DELETE FROM users
+        WHERE 
+            user_id=?
+            AND guild=?
+    """
+    params = (user_id, guild)
+
+    # Create cursor and execute query
+    cursor = conn.cursor()
+    cursor.execute(query, params)    
