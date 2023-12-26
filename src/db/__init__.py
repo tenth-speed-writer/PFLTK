@@ -41,6 +41,10 @@ from . import commands
 from .commands import \
     CommandData
 
+from . import users
+from users import \
+    User
+
 __all__ = [
     # Core module and shared exceptions
     "db",
@@ -77,4 +81,8 @@ __all__ = [
     # Commands module
     "CommandData",
     "commands"
+
+    # Users module
+    "User",
+    "users"
 ]
